@@ -1,0 +1,9 @@
+5
+a g
+b f
+c j
+d k
+e i
+ecdab
+2
+1
