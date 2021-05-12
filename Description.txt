@@ -1,0 +1,100 @@
+*************FOR ENCODING****************
+
+
+I.Arithmetic Coding
+1. First line in file contains the sequence to be encoded.
+2. Next n lines contain the symbols separated by space along with specific range separated by comma.
+For example:
+********
+CABCDAC
+A 0.0,0.1
+B 0.1,0.5
+C 0.5,0.7
+D 0.7,1.0
+********
+
+II.Run Length Encoding
+1. First line in the files contains the sequence to be encoded.
+For example: 
+********
+AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCAAAAAAAAAAACCCCCBB
+********
+
+III.Golomb Coding
+1. First line in the file contains the divident.
+2. Second line in the file contains the divisor.
+For Example: 
+********
+117
+17
+********
+
+IV.Binary RLE
+1. First line in the file contains the sequence to be encoded.
+2. Second line in the file contains the number of bits in which the sequence is to be coded.
+For example:
+********
+00000000000000000000111000010000101000001100000000000000000010100000
+4 
+********
+
+V.Move To Front
+1. First line in the file contains the sequence to be encoded.
+For Example:
+********
+finisher
+********
+
+VI.Borrows Wheeler Theorem
+1. First line in the file contains the sequence to be encoded.
+For Example:
+********
+selvestyerstallone
+********
+
+VII.Tunstall Code
+1. First line in the file contains the sequence to be encoded.
+2. Second line in the file contains the number of bits in which the sequence is to be coded.
+For example:
+********
+ababaaaabacacbaaa
+4
+********
+Please Note: The bits needed for the encoding of the sequence must be greater than or equal to upper bound of number of letters in sequence ^ 0.5
+
+VIII.LZ77
+1. First line in the file contains the sequence to be encoded.
+2. Second line in the file contains the search buffer length.
+3. Third line in the filse contains the look ahead buffer length.
+For example
+********
+cabarararrarabacbabrara
+7
+6
+********
+Please Note: The total window size is equal to the sum of search buffer length and look ahead buffer length.
+
+IX. LZ78
+1. First line in the file contains the sequence to be encoded.
+For example
+********
+abracadabra
+********
+
+X. LZW
+1. First line in the file contains the sequence to be encoded.
+For example
+********
+cabarararrarabacbabrara
+********
+
+XI. Huffman Coding.
+Will discuss tomorrow
+
+
+*************FOR DECODING****************
+
+Write this
+*******
+The decoding of the file is possible only if it is compressed by this appication. 
+*******
