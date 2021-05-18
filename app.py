@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 from os import system
 from subprocess import Popen
 from time import sleep
-# import rle
+import os
 
 color = "#20bebe"
 LARGEFONT = ("Montserrat-Medium", 25, "bold")
@@ -801,39 +801,38 @@ class Page1(Frame):
         button1 = Button(self, text ="HOME PAGE", command = lambda : controller.show_frame(StartPage, slt=None), bg=btnbg, fg=color, height=1, width=10,font=BUTTONFONT)
         button1.grid(row = 8, column = 1, padx = 6, pady = 20)
 
-        mtf_button = Button(self, text ="MOVE TO FRONT", command = lambda : self.open_nxt("mtf"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        mtf_button.grid(row = 4, column = 0, padx = (50, 0), pady = 10)
+        # mtf_button = Button(self, text ="MOVE TO FRONT", command = lambda : self.open_nxt("mtf"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
+        # mtf_button.grid(row = 4, column = 0, padx = (50, 0), pady = 10)
         
         lzw_button = Button(self, text ="LZW", command = lambda : self.open_nxt("lzw"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        lzw_button.grid(row = 4, column = 1, padx = (25, 25), pady = 10)
+        lzw_button.grid(row = 4, column = 0, padx = (50, 0), pady = 10)
         
         hfman_button = Button(self, text ="HUFFMAN", command = lambda : self.open_nxt("hfm"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        hfman_button.grid(row = 4, column = 2, padx = (0, 50), pady = 10)
+        hfman_button.grid(row = 4, column = 1, padx = (25, 25), pady = 10)
         
         binrle_button = Button(self, text ="BINARY RLE", command = lambda : self.open_nxt("binrle"), bg=color ,fg="white", height=2, width=20, font=BUTTONFONT)
-        binrle_button.grid(row = 5, column = 0, padx = (50, 0), pady = 10)
+        binrle_button.grid(row = 4, column = 2, padx = (0, 50), pady = 10)
         
         lz77_button = Button(self, text ="LZ77", command = lambda : self.open_nxt("lz77"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        lz77_button.grid(row = 5, column = 1, padx = (25, 25), pady = 10)
+        lz77_button.grid(row = 5, column = 0, padx = (50, 0), pady = 10)
         
         golomb_button = Button(self, text ="GOLOMB", command = lambda : self.open_nxt("golomb"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        golomb_button.grid(row = 5, column = 2, padx = (0, 50), pady = 10)
+        golomb_button.grid(row = 5, column = 1, padx = (25, 25), pady = 10)
         
-        burrows_button = Button(self, text ="BURROWS WHEELER", command = lambda : self.open_nxt("bw"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        burrows_button.grid(row = 6, column = 0, padx = (50, 0), pady = 10)
+        # burrows_button = Button(self, text ="BURROWS WHEELER", command = lambda : self.open_nxt("bw"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
+        # burrows_button.grid(row = 6, column = 0, padx = (50, 0), pady = 10)
         
         lz78_button = Button(self, text ="LZ78", command = lambda : self.open_nxt("lz78"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        lz78_button.grid(row = 6, column = 1, padx = (25, 25), pady = 10)
+        lz78_button.grid(row = 6, column = 0, padx = (50, 0), pady = 10)
         
         tunstall_button = Button(self, text ="TUNSTALL", command = lambda : self.open_nxt("tunstall"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
-        tunstall_button.grid(row = 6, column = 2, padx = (0, 50), pady = 10)
+        tunstall_button.grid(row = 6, column = 1, padx = (25, 25), pady = 10)
         
         arith_button = Button(self, text ="ARITHMATIC CODING", command = lambda : self.open_nxt("ac"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
         arith_button.grid(row = 7, column = 0, padx = (50, 0), pady = 10)
 
         rle_button = Button(self, text ="RLE", command = lambda : self.open_nxt("rle"), bg=color, fg="white", height=2, width=20, font=BUTTONFONT)
         rle_button.grid(row = 7, column = 1, padx = (25, 25), pady = 10)
-
 
     def open_nxt(self, algo):
         self.slt_algo = algo
@@ -1043,12 +1042,27 @@ class Page2(Frame):
             path = TUNSTALL_DECOMPRESS(file) 
         else:
             self.ctrl.show_frame(StartPage, slt=None)
-        
+                
         if path!=None:
+            c_size = os.stat(path).st_size
+        
+            o_size = os.stat(file.name).st_size
+
+            compression_ratio = o_size/c_size
+            efficiency = (1 - (c_size/o_size)) * 100
+            
+            ef_path = "./" + str(select) + "_efficiency.txt"
+            with open(ef_path, "w") as fw:
+                fw.write("Compression Ratio : " + str(compression_ratio))
+                fw.write("\n")
+                fw.write("Efficiency : " + str(efficiency)) 
+            
             cmd = "notepad.exe "+path
             Popen(cmd)
             path = None
             
+            cmd = "notepad.exe "+ef_path
+            Popen(cmd)
             # label = Label(self, text = "Output Generated!", font = ("Montserrat-Medium", 45, "bold"), fg=color)
             # label.grid(row = 4, column = 2, padx = 90, pady = 10)
             # sleep(10) 
