@@ -1,0 +1,2 @@
+Compression Ratio : 0.7868852459016393
+Efficiency : -27.083333333333325

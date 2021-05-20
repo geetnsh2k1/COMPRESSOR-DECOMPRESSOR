@@ -522,14 +522,16 @@ def HFM_COMPRESS(file):
         dictionary[data[0]] = eval(data[1])
     codec = HuffmanCodec.from_frequencies(dictionary)
     encoded = codec.encode(sequence)
+    print(type(encoded))
     with open(default+"compressed_hfm_"+name, "w") as fw:
-        fw.write(str(encoded) + str("\n") + str(codec))
+        fw.write(str(encoded) + str("\n") + str(dictionary))
     return default+"compressed_hfm_"+name
 
 def HFM_DECOMPRESS(file):
     name = file.name.split("/")[-1]
-    encoded = file.readline().strip()
-    codec = eval(file.readline())
+    encoded = eval(file.readline().strip())
+    dictionary = eval(file.readline())
+    codec = HuffmanCodec.from_frequencies(dictionary)
     ans = codec.decode(encoded)
     with open(default+"decompressed_hfm_"+name, "w") as fw:
         fw.write(str(ans))
@@ -994,9 +996,11 @@ class Page2(Frame):
         
         path = None
         global select
-        if select == "c_mtf":
-            path = MOVE_TO_FRONT_COMPRESS(file)
-        elif select == "c_lzw":
+        show = True
+        if select[0] == "d":
+            show=False
+            
+        if select == "c_lzw":
             path = LZW_COMPRESS(file)
         elif select == "c_binrle":
             path = BINRLE_COMPRESS(file)
@@ -1006,8 +1010,6 @@ class Page2(Frame):
             path = LZ78_COMPRESS(file)
         elif select == "c_ac":
             path = AC_COMPRESS(file)
-        elif select == "c_bw":
-            path = BURROWS_WHEELER_COMPRESS(file)
         elif select == "c_rle":
             path = RLE_COMPRESS(file)
         elif select == "c_hfm":
@@ -1016,8 +1018,6 @@ class Page2(Frame):
             path = GOLOMB_COMPRESS(file)
         elif select == "c_tunstall":
             path = TUNSTALL_COMPRESS(file)
-        elif select == "d_mtf":
-            path = MOVE_TO_FRONT_DECOMPRESS(file)
         elif select == "d_lzw":
             path = LZW_DECOMPRESS(file)
         elif select == "d_binrle":
@@ -1028,8 +1028,6 @@ class Page2(Frame):
             path = LZ78_DECOMPRESS(file)
         elif select == "d_ac":
             path = AC_DECOMPRESS(file)
-        elif select == "d_bw":
-            path = BURROWS_WHEELER_DECOMPRESS(file)
         elif select == "d_rle":
             path = RLE_DECOMPRESS(file)
         elif select == "d_hfm":
@@ -1042,25 +1040,27 @@ class Page2(Frame):
             self.ctrl.show_frame(StartPage, slt=None)
                 
         if path!=None:
-            c_size = os.stat(path).st_size
-        
-            o_size = os.stat(file.name).st_size
-
-            compression_ratio = o_size/c_size
-            efficiency = (1 - (c_size/o_size)) * 100
+            if show: 
+                c_size = os.stat(path).st_size
             
-            ef_path = "./" + str(select) + "_efficiency.txt"
-            with open(ef_path, "w") as fw:
-                fw.write("Compression Ratio : " + str(compression_ratio))
-                fw.write("\n")
-                fw.write("Efficiency : " + str(efficiency)) 
+                o_size = os.stat(file.name).st_size
+
+                compression_ratio = o_size/c_size
+                efficiency = (1 - (c_size/o_size)) * 100
+                
+                ef_path = "./" + str(select) + "_efficiency.txt"
+                with open(ef_path, "w") as fw:
+                    fw.write("Compression Ratio : " + str(compression_ratio))
+                    fw.write("\n")
+                    fw.write("Efficiency : " + str(efficiency)) 
             
             cmd = "notepad.exe "+path
             Popen(cmd)
             path = None
             
-            cmd = "notepad.exe "+ef_path
-            Popen(cmd)
+            if show:
+                cmd = "notepad.exe "+ef_path
+                Popen(cmd)
             # label = Label(self, text = "Output Generated!", font = ("Montserrat-Medium", 45, "bold"), fg=color)
             # label.grid(row = 4, column = 2, padx = 90, pady = 10)
             # sleep(10) 
