@@ -14,7 +14,7 @@ LARGEFONT = ("Montserrat-Medium", 25, "bold")
 BUTTONFONT = ("Montserrat-Medium", 12)
 logoPath = "./graphics/logo-small.png"
 faviconPath = "./graphics/favicon.ico"
-btnbg = "#ffffff" #d0d0d0
+btnbg = "#ffffff" 
 default = "./Output/"
 
 select = None
@@ -30,8 +30,7 @@ def AC_COMPRESS(file):
         temp = i[2:]
         temp = list(temp.split(","))
         singal_dict[char] = tuple([float(temp[0].strip()),float(temp[1].strip())])
-    # print(singal_dict)
-    # print(singal)
+    
         
     Low = 0
     High = 1
@@ -66,7 +65,8 @@ def AC_DECOMPRESS(file):
 
     return default+"decompressed_ac_"+name
 
- ################################################################### 
+ ###################################################################
+"""
 def MOVE_TO_FRONT_COMPRESS(file):
     name = file.name.split("/")[-1]
     strng = file.read()
@@ -101,7 +101,7 @@ def MOVE_TO_FRONT_DECOMPRESS(file):
         fw.write(data)
 
     return default+"decompressed_move_to_front_"+name
-
+"""
 
 def LZW_COMPRESS(file):
     name = file.name.split("/")[-1]
@@ -154,8 +154,6 @@ def LZW_DECOMPRESS(file):
 
 def LZ78_COMPRESS(file):
     name = file.name.split("/")[-1]
-    data = file.read().strip()
-    
     text_from_file = file.read().strip()
     dict_of_codes = {text_from_file[0]: '1'}
     string = '0' + text_from_file[0]
@@ -201,6 +199,7 @@ def LZ78_DECOMPRESS(file):
     
     return default+"decompressed_lz78_"+name
 
+"""
 def BURROWS_WHEELER_COMPRESS(file):
     name = file.name.split("/")[-1]
     text = file.read().strip()
@@ -263,6 +262,7 @@ def BURROWS_WHEELER_DECOMPRESS(file):
         fw.write(str(L))
     
     return default+"decompressed_bw_"+name
+"""
 
 def Init(buffer, sequence, search_buf_length, look_ahead_buf_length, search_buf_pos, look_ahead_buf_pos, encode_list):
     buffer = sequence[search_buf_pos:search_buf_pos+search_buf_length]
@@ -414,7 +414,6 @@ def BINRLE_DECOMPRESS(file):
     for i in range(len(seq_mas)):
         integer = int(seq_mas[i],2)
         int_val.append(integer)
-        print(int_val[i])
     for i in range(len(int_val)):
         if int_val[i] == max_bits:
             decode = decode  + '0' * max_bits
@@ -429,11 +428,10 @@ def BINRLE_DECOMPRESS(file):
             decode = decode + '1'
     length = len(decode)
     if(int_val[-1] < 0):
-        print("The decoded sequence is: " + decode[:length])
+        decode = decode[:length]
     elif(int_val[-1] >= 0):
-        print("The decoded sequence is: " + decode[:length])
-    else:
-        print("The decoded sequence is: " + decode[:length])
+        decode = decode[:length - 1]
+    
         
     with open(default+"decompressed_binrle_"+name, "w") as fw:
         fw.write(str(decode))
